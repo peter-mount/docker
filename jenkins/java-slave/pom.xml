@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>onl.area51.docker.jenkins</groupId>
+        <artifactId>jenkins-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <groupId>onl.area51.docker.jenkins</groupId>
+    <artifactId>java-slave</artifactId>
+    <packaging>pom</packaging>
+    
+    <name>Docker Jenkins Java Slave</name>
+    
+    <description>A Jenkins Slave</description>
+    
+    <dependencies>
+        <dependency>
+            <groupId>onl.area51.docker.jenkins</groupId>
+            <artifactId>ubuntu-dev</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <imageName>${docker.image.prefix}/jenkins-slave</imageName>
+                    <imageTags>
+                        <imageTag>latest</imageTag>
+                        <imageTag>16.04</imageTag>
+                    </imageTags>
+                    <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
+                </configuration>
+            </plugin>
+            
+        </plugins>
+    </build>
+    
+</project>

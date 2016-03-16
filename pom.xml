@@ -12,6 +12,7 @@
     
     <modules>
         <module>java</module>
+        <module>jenkins</module>
     </modules>
     
     <properties>
