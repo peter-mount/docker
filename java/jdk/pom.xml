@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>onl.area51.docker</groupId>
+        <artifactId>java</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>java-jdk</artifactId>
+    <packaging>pom</packaging>
+    
+    <name>Docker Java JDK</name>
+    
+    <description>The Full JDK</description>
+    
+    <build>
+        <plugins>
+            
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <imageName>${docker.image.prefix}/java:jdk-8</imageName>
+                    <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
+                </configuration>
+            </plugin>
+            
+        </plugins>
+    </build>
+    
+</project>
