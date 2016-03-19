@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>onl.area51.docker</groupId>
+        <artifactId>docker</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <groupId>onl.area51.docker</groupId>
+    <artifactId>rabbitmq</artifactId>
+    <packaging>pom</packaging>
+    
+    <name>Docker RabbitMQ</name>
+    
+    <description>RabbitMQ with all required plugins</description>
+    
+    <build>
+        <plugins>
+            
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <imageName>${docker.image.prefix}/rabbitmq</imageName>
+                    <imageTags>
+                        <imageTag>latest</imageTag>
+                    </imageTags>
+                    <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
+                </configuration>
+            </plugin>
+            
+        </plugins>
+    </build>
+    
+</project>
