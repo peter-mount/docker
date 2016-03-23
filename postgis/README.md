@@ -41,3 +41,9 @@ You can add more to this, just separate them with spaces. You can add IPv4 addre
     docker run --name postgis -e POSTGRES_PASSWORD=password -e POSTGRES_NETWORK="2001:DB8:1234/48 192.168.1.0/24 2001:DB8:9999:1212/64" -d area51/postgis
 
 This will then add 3 networks to the pg_hba.conf file.
+
+## Digging around
+
+Once running you can get a shell with:
+
+    docker exec -it postgis /bin/bash
