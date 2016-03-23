@@ -15,6 +15,7 @@
         <module>jenkins</module>
         <module>rabbitmq</module>
         <module>tomcat</module>
+        <module>postgis</module>
     </modules>
     
     <properties>
