@@ -14,8 +14,54 @@
     
     <description>RabbitMQ with all required plugins</description>
     
+    <properties>
+        <docker.image.prefix>area51</docker.image.prefix>
+        <docker.image.tag>3.7.0m2</docker.image.tag>
+        <!--
+            The rabbit version to install. For a stable release both should match
+            For pre-release versions then they match the two parts of the download url
+            
+            From https://github.com/rabbitmq/rabbitmq-server/releases
+            find rabbitmq-server-generic-unix-*.tar.xz file, eg:
+
+               https://github.com/rabbitmq/rabbitmq-server/releases/download/
+                   rabbitmq_v3_7_0_milestone2/
+                   rabbitmq-server-generic-unix-3.7.500.2.tar.xz
+
+            Here rabbit.version will be 3.7.500.2 and rabbit.milestone 3.7.0_milestone2
+        -->
+        <rabbit.version>3.7.500.2</rabbit.version>
+        <rabbit.milestone>3.7.0_milestone2</rabbit.milestone>
+        <!-- The plugins to run as standard -->
+        <rabbit.plugins>rabbitmq_management rabbitmq_mqtt rabbitmq_shovel rabbitmq_shovel_management rabbitmq_web_stomp</rabbit.plugins>
+        <!-- Change this to point to a local server if you want -->
+        <github.url>https://github.com/rabbitmq/rabbitmq-server/releases/download</github.url>
+        <!-- Alpine download url -->
+        <alpine.url>http://dl-4.alpinelinux.org/alpine</alpine.url>
+    </properties>
+    
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/docker</directory>
+                <filtering>true</filtering>
+                <targetPath>${project.build.directory}/docker.temp</targetPath>
+            </resource>
+        </resources>
+        
         <plugins>
+            
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             
             <plugin>
                 <groupId>com.spotify</groupId>
@@ -26,9 +72,12 @@
                         <!--
                         <imageTag>latest</imageTag>
                         -->
-                        <imageTag>3.7.0m2</imageTag>
+                        <imageTag>${docker.image.tag}</imageTag>
                     </imageTags>
+                    <dockerDirectory>${project.build.directory}/docker.temp</dockerDirectory>
+                    <!--
                     <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
+                    -->
                 </configuration>
             </plugin>
             

@@ -1,0 +1,13 @@
+#!/bin/bash
+docker stop rabbit
+docker rm rabbit
+docker run -d \
+        --name rabbit \
+        --hostname rabbit \
+        --mac-address="00:00:00:00:00:03" \
+        -e RABBITMQ_DEFAULT_USER=peter \
+        -e RABBITMQ_DEFAULT_PASS=password \
+        -v /usr/local/rabbit:/var/lib/rabbitmq \
+        area51/rabbitmq
+docker logs -f rabbit
+

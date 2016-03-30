@@ -54,7 +54,7 @@ else
     sed -e "s/@user@/${RABBITMQ_DEFAULT_USER}/g" \
         -e "s/@password@/${RABBITMQ_DEFAULT_PASS}/g" \
         ${RABBITMQ_HOME}/etc/rabbitmq/standard.config \
-        >${RABBITMQ_HOME}/etc/rabbitmq/rabbitmq.config
+        >${RABBITMQ_HOME}/etc/rabbitmq/rabbitmq.conf
 fi
 
 # RMQ server process so we can tail the logs
