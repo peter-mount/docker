@@ -23,7 +23,10 @@
                 <configuration>
                     <imageName>${docker.image.prefix}/rabbitmq</imageName>
                     <imageTags>
+                        <!--
                         <imageTag>latest</imageTag>
+                        -->
+                        <imageTag>3.7.0m2</imageTag>
                     </imageTags>
                     <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
                 </configuration>
