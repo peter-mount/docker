@@ -13,6 +13,5 @@
     <name>Docker Jenkins</name>
     <modules>
         <module>java-slave</module>
-        <module>ubuntu-dev</module>
     </modules>
 </project>

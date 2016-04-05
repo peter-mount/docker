@@ -6,13 +6,12 @@
         <artifactId>docker</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>onl.area51.docker</groupId>
-    <artifactId>tomcat</artifactId>
+    <artifactId>ubuntu-dev</artifactId>
     <packaging>pom</packaging>
     
-    <name>Docker Tomcat</name>
+    <name>Docker Ubuntu Development</name>
     
-    <description>Apache Tomcat</description>
+    <description>Base Ubuntu container with all development tools present</description>
     
     <build>
         <plugins>
@@ -21,10 +20,10 @@
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <configuration>
-                    <imageName>${docker.image.prefix}/tomcat</imageName>
+                    <imageName>${docker.image.prefix}/ubuntu-dev</imageName>
                     <imageTags>
                         <imageTag>latest</imageTag>
-                        <imageTag>jre8</imageTag>
+                        <imageTag>16.04</imageTag>
                     </imageTags>
                     <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
                 </configuration>

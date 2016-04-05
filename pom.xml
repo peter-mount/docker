@@ -13,9 +13,9 @@
     <modules>
         <module>java</module>
         <module>jenkins</module>
-        <module>rabbitmq</module>
-        <module>tomcat</module>
         <module>postgis</module>
+        <module>rabbitmq</module>
+        <module>ubuntu-dev</module>
     </modules>
     
     <properties>

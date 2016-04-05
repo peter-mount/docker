@@ -24,7 +24,9 @@ RUN apt-get update &&\
         reprepro \
         s3cmd \
         subversion \
-        vim &&\
+        unzip \
+        vim \
+        zip &&\
     mkdir -p /var/run/sshd /opt &&\
     echo "Downloading java ${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}" &&\
     curl -s -jkLH "Cookie: oraclelicense=accept-securebackup-cookie" -o java.tar.gz\
