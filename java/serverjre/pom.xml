@@ -21,6 +21,8 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <configuration>
                     <imageName>${docker.image.prefix}/java:serverjre-8</imageName>
+                    <imageName>${docker.image.prefix}/java:serverjre</imageName>
+                    <imageName>${docker.image.prefix}/java:8</imageName>
                     <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
                 </configuration>
             </plugin>
