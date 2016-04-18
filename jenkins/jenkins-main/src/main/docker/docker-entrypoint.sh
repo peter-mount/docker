@@ -48,4 +48,4 @@ then
     OPTS="$OPTS $JENKINS_OPTS"
 fi
 
-exec /opt/jdk/bin/java -jar /opt/jenkins.war $OPTS
+exec /opt/jdk/bin/java $JAVA_OPTS -jar /opt/jenkins.war $OPTS
