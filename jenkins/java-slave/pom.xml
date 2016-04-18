@@ -13,18 +13,75 @@
     <name>Docker Jenkins Java Slave</name>
     
     <description>A Jenkins Slave</description>
-    
+        
+    <properties>
+        <docker.image.prefix>area51</docker.image.prefix>
+        
+        <!-- The version of docker to install, see https://get.docker.com/builds/ for current version -->
+        <docker.version>docker-1.11.0.tgz</docker.version>
+        
+        <!-- The default jenkins password, used when -e JENKINS_PASSWORD=xxxx is not used -->
+        <jenkins.password>jenkins</jenkins.password>
+        
+        <!-- Maven bug with filtering https://issues.apache.org/jira/browse/MRESOURCES-99 -->
+        <build.timestamp>${maven.build.timestamp}</build.timestamp>
+    </properties>
+
     <dependencies>
         <dependency>
-            <groupId>onl.area51.docker.jenkins</groupId>
-            <artifactId>ubuntu-dev</artifactId>
+            <groupId>onl.area51.docker</groupId>
+            <artifactId>java-jdk</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <type>pom</type>
         </dependency>
     </dependencies>
     
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/docker</directory>
+                <filtering>true</filtering>
+                <targetPath>${project.build.directory}/docker.temp</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/keys</directory>
+                <filtering>false</filtering>
+                <targetPath>${project.build.directory}/docker.temp</targetPath>
+            </resource>
+        </resources>
+        
         <plugins>
             
+            <plugin>
+                <groupId>org.codehaus.groovy.maven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                project.properties["hostname"] = InetAddress.getLocalHost().getHostName()
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -32,9 +89,8 @@
                     <imageName>${docker.image.prefix}/jenkins-slave</imageName>
                     <imageTags>
                         <imageTag>latest</imageTag>
-                        <imageTag>16.04</imageTag>
                     </imageTags>
-                    <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
+                    <dockerDirectory>${project.build.directory}/docker.temp</dockerDirectory>
                 </configuration>
             </plugin>
             

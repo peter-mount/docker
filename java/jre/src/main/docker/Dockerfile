@@ -12,6 +12,7 @@ MAINTAINER Peter Mount <peter@retep.org>
 
 # Download and add the pem to the trust store
 RUN apk add --update curl &&\
+    sed -e "s|export PATH=|export PATH=/opt/jre/bin:|" -i /etc/profile &&\
     curl -s https://letsencrypt.org/certs/lets-encrypt-x1-cross-signed.pem -o /lets-encrypt-x1-cross-signed.pem &&\
     curl -s https://letsencrypt.org/certs/lets-encrypt-x2-cross-signed.pem -o /lets-encrypt-x2-cross-signed.pem &&\
     curl -s https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem -o /lets-encrypt-x3-cross-signed.pem &&\

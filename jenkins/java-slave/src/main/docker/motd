@@ -1,0 +1,1 @@
+Area51 Jenkins Slave ${project.version} (${hostname}) ${build.timestamp}
