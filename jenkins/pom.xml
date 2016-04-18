@@ -13,5 +13,6 @@
     <name>Docker Jenkins</name>
     <modules>
         <module>java-slave</module>
+        <module>jenkins-main</module>
     </modules>
 </project>

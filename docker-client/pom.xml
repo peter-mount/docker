@@ -2,27 +2,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>onl.area51.docker.jenkins</groupId>
-        <artifactId>jenkins-parent</artifactId>
+        <groupId>onl.area51.docker</groupId>
+        <artifactId>docker</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>onl.area51.docker.jenkins</groupId>
-    <artifactId>java-slave</artifactId>
+    <artifactId>docker-client</artifactId>
     <packaging>pom</packaging>
     
-    <name>Docker Jenkins Java Slave</name>
+    <name>Docker Alpine Docker Client</name>
     
-    <description>A Jenkins Slave</description>
+    <description>
+        Alpine based Docker Client.
         
+        This image is the parent for images like jenkins-slave and jenkins
+        as they can then access docker if necessary.
+    </description>
+    
     <properties>
         <docker.image.prefix>area51</docker.image.prefix>
-        <docker.image.name>jenkins-slave</docker.image.name>
+        <docker.image.name>docker-client</docker.image.name>
         
         <!-- The version of docker to install, see https://get.docker.com/builds/ for current version -->
         <docker.version>docker-1.11.0.tgz</docker.version>
-        
-        <!-- The default jenkins password, used when -e JENKINS_PASSWORD=xxxx is not used -->
-        <jenkins.password>jenkins</jenkins.password>
         
         <!-- Maven bug with filtering https://issues.apache.org/jira/browse/MRESOURCES-99 -->
         <build.timestamp>${maven.build.timestamp}</build.timestamp>
@@ -45,12 +46,7 @@
                 <targetPath>${project.build.directory}/docker.temp</targetPath>
             </resource>
             <resource>
-                <directory>../src/main/scripts</directory>
-                <filtering>true</filtering>
-                <targetPath>${project.build.directory}/docker.temp</targetPath>
-            </resource>
-            <resource>
-                <directory>../src/main/keys</directory>
+                <directory>src/main/keys</directory>
                 <filtering>false</filtering>
                 <targetPath>${project.build.directory}/docker.temp</targetPath>
             </resource>

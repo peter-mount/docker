@@ -16,6 +16,7 @@
         <module>postgis</module>
         <module>rabbitmq</module>
         <module>ubuntu-dev</module>
+        <module>docker-client</module>
     </modules>
     
     <properties>

@@ -1,6 +1,9 @@
 FROM area51/docker-client
 MAINTAINER Peter Mount <peter@retep.org>
 
+ENV JENKINS_HOME /opt/jenkins
+ENV JENKINS_PORT 80
+
 COPY motd /etc/motd
 COPY ssh_host_* /etc/ssh.cache/
 
@@ -26,6 +29,9 @@ RUN apk add --update ca-certificates openssh curl &&\
         git \
         mercurial \
         subversion &&\
+    echo Retrieving jenkins &&\
+    curl -sSL -O http://mirrors.jenkins-ci.org/war/latest/jenkins.war &&\
+    mv jenkins.war /opt &&\
     rm -rf /var/cache/apk/*
 
 EXPOSE 22
