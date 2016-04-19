@@ -1,8 +1,16 @@
 #!/bin/ash
 #
 # Environment variables:
-# MAVEN_MIRROR          The url of a local repository to use instead of maven central
-# MAVEN_PRIVATE_MIRROR  Optional when MAVEN_MIRROR is in use, a secondary mirror
+# MAVEN_MIRROR              The url of a local repository to use instead of maven central
+# MAVEN_PRIVATE_MIRROR      Optional when MAVEN_MIRROR is in use, a secondary mirror
+#
+# MAVEN_RELEASE_ID          id
+# MAVEN_RELEASE_USER        user for releases
+# MAVEN_RELEASE_PASSWORD    password for releases
+#
+# MAVEN_SNAPSHOT_ID         id
+# MAVEN_SNAPSHOT_USER       user for snapshots
+# MAVEN_SNAPSHOT_PASSWORD   password for snapshots
 #
 
 # Maven config
@@ -12,7 +20,26 @@ then
     (
 	echo '<?xml version="1.0" encoding="UTF-8"?>'
 	echo '<settings xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">'
-	
+
+        echo '<servers>'
+        if [ -n "$MAVEN_RELEASE_USER" ]
+        then
+            if [ -z "$MAVEN_RELEASE_ID" ]
+            then
+                MAVEN_RELEASE_ID=releases
+            fi
+            echo "<server><id>${MAVEN_SNAPSHOT_ID}</id><username>${MAVEN_RELEASE_USER}</username><password>${MAVEN_RELEASE_PASSWORD}</password></server>"
+        fi
+        if [ -n "$MAVEN_SNAPSHOT_USER" ]
+        then
+            if [ -z "$MAVEN_SNAPSHOT_ID" ]
+            then
+                MAVEN_SNAPSHOT_ID=snapshots
+            fi
+            echo "<server><id>${MAVEN_SNAPSHOT_ID}</id><username>${MAVEN_SNAPSHOT_USER}</username><password>${MAVEN_SNAPSHOT_PASSWORD}</password></server>"
+        fi
+        echo '</servers>'
+
 	if [ -n "$MAVEN_MIRROR" ]
 	then
 	    MIRROR_OF=central
@@ -46,5 +73,9 @@ then
 	fi
 	echo '</settings>'
     ) >/home/jenkins/.m2/settings.xml
+
+    mkdir -p /root/.m2
+    cp /home/jenkins/.m2/settings.xml /root/.m2/settings.xml
+
     chown -R jenkins:jenkins /home/jenkins/.m2
 fi
