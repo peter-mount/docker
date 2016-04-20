@@ -7,13 +7,15 @@
 #    it to the jdk.
 #
 ################################################################################
-FROM jeanblanchard/alpine-glibc
+FROM area51/alpine
 MAINTAINER Peter Mount <peter@retep.org>
 
 ENV JAVA_VERSION_MAJOR 8
 ENV JAVA_VERSION_MINOR 92
 ENV JAVA_VERSION_BUILD 14
 ENV JAVA_PACKAGE       server-jre
+
+ENV PATH $PATH:/opt/jdk/bin
 
 # Download and add the pem to the trust store
 RUN ${alpine.repo} \

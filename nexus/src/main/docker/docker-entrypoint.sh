@@ -1,5 +1,7 @@
 #!/bin/ash
 
+sed -i -e "s/application-port=8081/application-port=${NEXUS_PORT}/g" /opt/sonatype/nexus/conf/nexus.properties
+
 exec /opt/jdk/bin/java \
     -Dnexus-work=${SONATYPE_WORK} \
     -Dnexus-webapp-context-path=${CONTEXT_PATH} \

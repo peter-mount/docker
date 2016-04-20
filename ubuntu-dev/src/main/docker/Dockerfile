@@ -32,7 +32,7 @@ RUN ${ubuntu.repo} \
     curl -s -jkLH "Cookie: oraclelicense=accept-securebackup-cookie" -o java.tar.gz\
         ${java.download.url}/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz &&\
     echo "Installing java ${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}" &&\
-    gunzip -c java.tar.gz | tar -xfz - -C /opt &&\
+    gunzip -c java.tar.gz | tar -xf - -C /opt &&\
     rm -f java.tar.gz &&\
     ln -s /opt/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_MINOR} /opt/jdk &&\
     ln -s /opt/jdk/bin/idlj /usr/local/bin/idlj &&\

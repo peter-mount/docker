@@ -1,5 +1,6 @@
 #!/bin/bash
 for i in \
+        area51/alpine \
 	area51/java:serverjre-8 \
 	area51/java:jre-8 \
 	area51/java:jdk-8 \

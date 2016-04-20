@@ -3,24 +3,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>onl.area51.docker</groupId>
-        <artifactId>java</artifactId>
+        <artifactId>docker</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>java-jdk</artifactId>
+    <artifactId>alpine</artifactId>
     <packaging>pom</packaging>
     
-    <name>Docker Java JDK</name>
+    <name>Docker Alpine base image</name>
     
-    <description>The Full JDK</description>
-    
-    <dependencies>
-        <dependency>
-        <groupId>onl.area51.docker</groupId>
-            <artifactId>alpine</artifactId>            
-            <version>1.0-SNAPSHOT</version>
-            <type>pom</type>
-        </dependency>
-    </dependencies>
+    <description>Alpine Base Image</description>
     
     <build>
         <resources>
@@ -49,7 +40,7 @@
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <configuration>
-                    <imageName>${docker.image.prefix}/java:jdk-8</imageName>
+                    <imageName>${docker.image.prefix}/alpine</imageName>
                     <dockerDirectory>${project.build.directory}/docker.temp</dockerDirectory>
                 </configuration>
             </plugin>

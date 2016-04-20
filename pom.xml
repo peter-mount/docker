@@ -11,6 +11,7 @@
     <description>Various docker images</description>
     
     <modules>
+        <module>alpine</module>
         <module>docker-client</module>
         <module>java</module>
         <module>jenkins</module>
@@ -27,9 +28,10 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     
         <jenkins.repo>http://mirrors.jenkins-ci.org</jenkins.repo>
-        <letsencrypt.repo>https://letsencrypt.org/certs</letsencrypt.repo>
         <java.download.url>http://download.oracle.com/otn-pub/java/jdk</java.download.url>
-        
+        <letsencrypt.repo>https://letsencrypt.org/certs</letsencrypt.repo>
+        <nexus.url>https://download.sonatype.com/nexus/oss</nexus.url>
+
         <alpine.repo></alpine.repo>
         <alpine.repo.end></alpine.repo.end>
         
@@ -78,7 +80,8 @@
         
                 <jenkins.repo>${repo.base}/jenkins</jenkins.repo>
                 <java.download.url>${fileserver}/java</java.download.url>
-        
+                <nexus.url>${repo.base}/nexus</nexus.url>
+
                 <sed.common> -r \
                     -e "s|http(s?)://(.+).alpinelinux.org|${repo.base}/alpine|g" \
                     -e "s|http(s?)://httpredir.debian.org|${repo.base}/debian|g" \
@@ -88,8 +91,6 @@
                 </sed.common>
                 
                 <!-- For now, if fileserver is not on same docker node or on a public IPv4 address alpine apk cannot access it -->
-                <alpine.repo></alpine.repo>
-                <alpine.repo.end></alpine.repo.end>
                 <!--
                 <alpine.repo>sed -i.bak ${sed.common} /etc/apk/repositories &amp;&amp;</alpine.repo>
                 <alpine.repo.end>find /etc/apt -name "*.bak" -exec mv -v {} $(dirname {})/$(basename {} .bak) \; &amp;&amp;</alpine.repo.end>

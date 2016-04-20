@@ -12,7 +12,16 @@
     <name>Docker Java JRE</name>
     
     <description>The Full JRE</description>
-    
+        
+    <dependencies>
+        <dependency>
+        <groupId>onl.area51.docker</groupId>
+            <artifactId>alpine</artifactId>            
+            <version>1.0-SNAPSHOT</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+
     <build>
         <resources>
             <resource>

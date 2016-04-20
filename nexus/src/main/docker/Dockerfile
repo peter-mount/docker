@@ -1,11 +1,12 @@
 FROM area51/java:serverjre-8
 MAINTAINER Peter Mount <peter@retep.org>
 
+ENV NEXUS_PORT 80
+
 ENV SONATYPE_WORK ${nexus.work}
 
 COPY *.sh /
-#ENTRYPOINT  ["/docker-entrypoint.sh"]
-ENTRYPOINT ["/bin/ash"]
+ENTRYPOINT  ["/docker-entrypoint.sh"]
 
 RUN ${alpine.repo} \
     apk add --update ca-certificates curl &&\
@@ -18,16 +19,16 @@ RUN ${alpine.repo} \
 	    -D nexus &&\
     echo "Downloading Nexus ${nexus.version}" &&\
     curl -sSL -O ${nexus.url}/nexus-${nexus.version}-bundle.tar.gz &&\
+    echo "Installing Nexus ${nexus.version}" &&\
     tar xzf nexus-${nexus.version}-bundle.tar.gz &&\
-    mv nexus-${nexus.version} /opt/sonatype &&\
+    mv nexus-${nexus.version} /opt/sonatype/nexus &&\
     rm -rf nexus-${nexus.version}-bundle.tar.gz &&\
+    chmod +x /*.sh &&\
     ${alpine.repo.end} rm -rf /var/cache/apk/*
 
 VOLUME ${nexus.work}
 
-EXPOSE 8081
 WORKDIR /opt/sonatype/nexus
-USER nexus
 ENV CONTEXT_PATH /
 ENV MAX_HEAP 768m
 ENV MIN_HEAP 256m
