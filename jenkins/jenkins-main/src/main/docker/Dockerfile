@@ -10,7 +10,8 @@ COPY ssh_host_* /etc/ssh.cache/
 COPY *.sh /
 ENTRYPOINT  ["/docker-entrypoint.sh"]
 
-RUN apk add --update ca-certificates openssh curl &&\
+RUN ${alpine.repo} \
+    apk add --update ca-certificates openssh curl &&\
     chmod 500 /docker-entrypoint.sh &&\
     chmod -f 600 /etc/ssh.cache/ssh_host_* &&\
     mkdir -p ~root/.ssh &&\
@@ -30,9 +31,12 @@ RUN apk add --update ca-certificates openssh curl &&\
         mercurial \
         subversion &&\
     echo Retrieving jenkins &&\
-    curl -sSL -O http://mirrors.jenkins-ci.org/war/latest/jenkins.war &&\
+    curl -sSL -O ${jenkins.repo}/latest/jenkins.war &&\
     mv jenkins.war /opt &&\
+    mkdir ${JENKINS_HOME} &&\
     rm -rf /var/cache/apk/*
 
-EXPOSE 22
+EXPOSE 22/tcp 80/tcp 443/tcp 50000/tcp
+
+VOLUME ${JENKINS_HOME}
 

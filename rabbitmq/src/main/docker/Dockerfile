@@ -19,7 +19,8 @@ VOLUME      /var/lib/rabbitmq
 ENTRYPOINT  ["/docker-entrypoint.sh"]
 #CMD         ["/docker-entrypoint.sh"]
 
-RUN         chmod a+x /docker-entrypoint.sh && apk add --update curl tar xz bash && \
+RUN         ${alpine.repo} \
+            chmod a+x /docker-entrypoint.sh && apk add --update curl tar xz bash && \
             echo "${alpine.url}/edge/main" >> /etc/apk/repositories && \
             echo "${alpine.url}/edge/testing" >> /etc/apk/repositories && \
             echo "${alpine.url}/edge/community" >> /etc/apk/repositories && \

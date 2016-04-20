@@ -1,10 +1,22 @@
 FROM postgres:9.5
 MAINTAINER Peter Mount <peter@retep.org>
 
-ENV POSTGIS_MAJOR 2.2
-ENV POSTGIS_VERSION 2.2.1+dfsg-2.pgdg80+1
+#============================================================================
+# To determine these:
+# docker run -it --rm postgres:9.5 bash
+# apt-get update
+# apt-cache search postgis
+# That will give you POSTGIS_MAJOR.
+#
+# So if it's 2.2 then: apt-cache show postgresql-9.5-postgis-2.2|grep Version
+# Will give you the POSTGIS_VERSION
+#============================================================================
 
-RUN apt-get update &&\
+ENV POSTGIS_MAJOR 2.2
+ENV POSTGIS_VERSION 2.2.2+dfsg-1.pgdg80+1
+
+RUN ${debian.repo} \
+    apt-get update &&\
     apt-get install -y --no-install-recommends \
         vim \
         postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR=$POSTGIS_VERSION \

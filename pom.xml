@@ -11,12 +11,13 @@
     <description>Various docker images</description>
     
     <modules>
+        <module>docker-client</module>
         <module>java</module>
         <module>jenkins</module>
+        <module>nexus</module>
         <module>postgis</module>
         <module>rabbitmq</module>
         <module>ubuntu-dev</module>
-        <module>docker-client</module>
     </modules>
     
     <properties>
@@ -24,6 +25,48 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+    
+        <!-- For entries below, common base uri for the central cache. Not used if they are blank -->
+        <repo.base>http://172.17.0.2</repo.base>
+        
+        <!-- Common regex for various apt/apk/rpm repositories -->
+        <sed.common> -r \
+            -e "s|http(s?)://dl-4.alpinelinux.org|${repo.base}/alpine-test|g" \
+            -e "s|http(s?)://dl-cdn.alpinelinux.org|${repo.base}/alpine|g" \
+            -e "s|http(s?)://httpredir.debian.org|${repo.base}/debian|g" \
+            -e "s|http(s?)://security.debian.org|${repo.base}/debian-security|g" \
+            -e "s|http(s?)://apt.postgresql.org|${repo.base}/postgresql-apt|g" \
+            -e "s|http(s?)://archive.ubuntu.com|${repo.base}/ubuntu|g"
+        </sed.common>
+        <!--
+            This is the various repositories. Leave blank for the defaults but replace with any required shell scripts
+            to point them to a local mirror
+        -->
+        <!--
+        <alpine.repo></alpine.repo>
+        -->
+        <alpine.repo>sed -i ${sed.common} /etc/apk/repositories &amp;&amp;</alpine.repo>
+        
+        <!--
+        <ubuntu.repo></ubuntu.repo>
+        <ubuntu.repo>sed -i ${sed.common} /etc/apt/sources.list /etc/apt/sources.list.d/* &amp;&amp;</ubuntu.repo>
+        -->
+        <ubuntu.repo>sed -i ${sed.common} $(ls /etc/apt/sources.list /etc/apt/sources.list.d/*) &amp;&amp;</ubuntu.repo>
+        
+        <!--
+        <debian.repo></debian.repo>
+        -->
+        <debian.repo>sed -i ${sed.common} $(ls /etc/apt/sources.list /etc/apt/sources.list.d/*) &amp;&amp;</debian.repo>
+        
+        <!--
+        <jenkins.repo>http://mirrors.jenkins-ci.org/war</jenkins.repo>
+        -->
+        <jenkins.repo>${repo.base}/jenkins</jenkins.repo>
+        
+        <letsencrypt.repo>https://letsencrypt.org/certs</letsencrypt.repo>
+        <!--
+        <letsencrypt.repo>${repo.base}/letsencrypt</letsencrypt.repo>
+        -->
     </properties>
     
     <build>

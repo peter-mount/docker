@@ -8,7 +8,8 @@ ENV JAVA_VERSION_BUILD 02
 ENV JAVA_PACKAGE       jdk
 ENV JAVA_SHA256_SUM    0bfd5d79f776d448efc64cb47075a52618ef76aabb31fde21c5c1018683cdddd
 
-RUN apt-get update &&\
+RUN ${ubuntu.repo} \
+    apt-get update &&\
     apt-get install -y \
         apt-transport-https \
         ca-certificates \
@@ -83,8 +84,14 @@ RUN apt-get update &&\
          /opt/jdk/jre/lib/amd64/libjavafx*.so \
          /opt/jdk/jre/lib/amd64/libjfx*.so &&\
     echo "Patching cacerts for LetsEncrypt support" &&\
-    curl -s https://letsencrypt.org/certs/lets-encrypt-x1-cross-signed.pem -o /le.pem &&\
-    /opt/jdk/bin/keytool -trustcacerts -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -noprompt -importcert -file /le.pem &&\
-    rm -f /le.pem && \
+    curl -s ${letsencrypt.repo}/lets-encrypt-x1-cross-signed.pem -o /lets-encrypt-x1-cross-signed.pem &&\
+    curl -s ${letsencrypt.repo}/lets-encrypt-x2-cross-signed.pem -o /lets-encrypt-x2-cross-signed.pem &&\
+    curl -s ${letsencrypt.repo}/lets-encrypt-x3-cross-signed.pem -o /lets-encrypt-x3-cross-signed.pem &&\
+    curl -s ${letsencrypt.repo}/lets-encrypt-x4-cross-signed.pem -o /lets-encrypt-x4-cross-signed.pem &&\
+    /opt/jdk/bin/keytool -trustcacerts -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -noprompt -importcert -alias lets-encrypt-x1-cross-signed -file /lets-encrypt-x1-cross-signed.pem &&\
+    /opt/jdk/bin/keytool -trustcacerts -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -noprompt -importcert -alias lets-encrypt-x2-cross-signed -file /lets-encrypt-x2-cross-signed.pem &&\
+    /opt/jdk/bin/keytool -trustcacerts -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -noprompt -importcert -alias lets-encrypt-x3-cross-signed -file /lets-encrypt-x3-cross-signed.pem &&\
+    /opt/jdk/bin/keytool -trustcacerts -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -noprompt -importcert -alias lets-encrypt-x4-cross-signed -file /lets-encrypt-x4-cross-signed.pem &&\
+    rm -f /*.pem && \
     echo "Cleaning up" &&\
     rm -rf /var/lib/apt/lists/*

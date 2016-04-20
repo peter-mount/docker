@@ -1,13 +1,16 @@
 FROM area51/docker-client
 MAINTAINER Peter Mount <peter@retep.org>
 
+ENV JENKINS_HOME /home/jenkins
+
 COPY motd /etc/motd
 COPY ssh_host_* /etc/ssh.cache/
 
 COPY *.sh /
 ENTRYPOINT  ["/docker-entrypoint.sh"]
 
-RUN apk add --update ca-certificates openssh curl &&\
+RUN ${alpine.repo} \
+    apk add --update ca-certificates openssh curl &&\
     chmod 500 /docker-entrypoint.sh &&\
     chmod -f 600 /etc/ssh.cache/ssh_host_* &&\
     mkdir -p ~root/.ssh &&\
@@ -16,7 +19,7 @@ RUN apk add --update ca-certificates openssh curl &&\
     cp -a /etc/ssh /etc/ssh.cache && \
     mkdir -p /var/run/sshd &&\
     addgroup -g 1000 jenkins &&\
-    adduser -h /home/jenkins \
+    adduser -h ${JENKINS_HOME} \
     	    -u 1000 \
 	    -G jenkins \
 	    -s /bin/ash \
@@ -28,5 +31,6 @@ RUN apk add --update ca-certificates openssh curl &&\
         subversion &&\
     rm -rf /var/cache/apk/*
 
-EXPOSE 22
+EXPOSE 22/tcp
 
+VOLUME ${JENKINS_HOME}
