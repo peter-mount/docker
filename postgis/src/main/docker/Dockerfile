@@ -21,7 +21,7 @@ RUN ${debian.repo} \
         vim \
         postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR=$POSTGIS_VERSION \
         postgis=$POSTGIS_VERSION &&\
-    rm -rf /var/lib/apt/lists/*
+    ${debian.repo.end} rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /docker-entrypoint-initdb.d
 COPY ./*.sh /docker-entrypoint-initdb.d/

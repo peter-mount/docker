@@ -32,7 +32,7 @@
     <dependencies>
         <dependency>
             <groupId>onl.area51.docker</groupId>
-            <artifactId>java-jdk</artifactId>
+            <artifactId>serverjre</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>pom</type>
         </dependency>

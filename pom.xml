@@ -26,47 +26,18 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     
-        <!-- For entries below, common base uri for the central cache. Not used if they are blank -->
-        <repo.base>http://172.17.0.2</repo.base>
-        
-        <!-- Common regex for various apt/apk/rpm repositories -->
-        <sed.common> -r \
-            -e "s|http(s?)://dl-4.alpinelinux.org|${repo.base}/alpine-test|g" \
-            -e "s|http(s?)://dl-cdn.alpinelinux.org|${repo.base}/alpine|g" \
-            -e "s|http(s?)://httpredir.debian.org|${repo.base}/debian|g" \
-            -e "s|http(s?)://security.debian.org|${repo.base}/debian-security|g" \
-            -e "s|http(s?)://apt.postgresql.org|${repo.base}/postgresql-apt|g" \
-            -e "s|http(s?)://archive.ubuntu.com|${repo.base}/ubuntu|g"
-        </sed.common>
-        <!--
-            This is the various repositories. Leave blank for the defaults but replace with any required shell scripts
-            to point them to a local mirror
-        -->
-        <!--
-        <alpine.repo></alpine.repo>
-        -->
-        <alpine.repo>sed -i ${sed.common} /etc/apk/repositories &amp;&amp;</alpine.repo>
-        
-        <!--
-        <ubuntu.repo></ubuntu.repo>
-        <ubuntu.repo>sed -i ${sed.common} /etc/apt/sources.list /etc/apt/sources.list.d/* &amp;&amp;</ubuntu.repo>
-        -->
-        <ubuntu.repo>sed -i ${sed.common} $(ls /etc/apt/sources.list /etc/apt/sources.list.d/*) &amp;&amp;</ubuntu.repo>
-        
-        <!--
-        <debian.repo></debian.repo>
-        -->
-        <debian.repo>sed -i ${sed.common} $(ls /etc/apt/sources.list /etc/apt/sources.list.d/*) &amp;&amp;</debian.repo>
-        
-        <!--
-        <jenkins.repo>http://mirrors.jenkins-ci.org/war</jenkins.repo>
-        -->
-        <jenkins.repo>${repo.base}/jenkins</jenkins.repo>
-        
+        <jenkins.repo>http://mirrors.jenkins-ci.org</jenkins.repo>
         <letsencrypt.repo>https://letsencrypt.org/certs</letsencrypt.repo>
-        <!--
-        <letsencrypt.repo>${repo.base}/letsencrypt</letsencrypt.repo>
-        -->
+        <java.download.url>http://download.oracle.com/otn-pub/java/jdk</java.download.url>
+        
+        <alpine.repo></alpine.repo>
+        <alpine.repo.end></alpine.repo.end>
+        
+        <ubuntu.repo></ubuntu.repo>
+        <ubuntu.repo.end></ubuntu.repo.end>
+        
+        <debian.repo></debian.repo>
+        <debian.repo.end></debian.repo.end>
     </properties>
     
     <build>
@@ -76,16 +47,60 @@
                     <groupId>com.spotify</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
                     <version>0.2.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>build</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
     </build>
+    
+    <profiles>
+        <profile>
+            <!--
+            Add -Dfileserver=http://hostname then these kick in.
+            
+            It will expect ${fileserver}/repo to contain the various apt/apk repositories as well as some like jenkins.war
+            Whilst ${fileserver}/java the local copy of the JDK binaries.
+            -->
+            <activation>
+                <property>
+                    <name>fileserver</name>
+                </property>
+            </activation>
+            <properties>
+                <repo.base>${fileserver}/repo</repo.base>
+        
+                <jenkins.repo>${repo.base}/jenkins</jenkins.repo>
+                <java.download.url>${fileserver}/java</java.download.url>
+        
+                <sed.common> -r \
+                    -e "s|http(s?)://(.+).alpinelinux.org|${repo.base}/alpine|g" \
+                    -e "s|http(s?)://httpredir.debian.org|${repo.base}/debian|g" \
+                    -e "s|http(s?)://security.debian.org|${repo.base}/debian-security|g" \
+                    -e "s|http(s?)://apt.postgresql.org|${repo.base}/postgresql-apt|g" \
+                    -e "s|http(s?)://archive.ubuntu.com|${repo.base}/ubuntu|g"
+                </sed.common>
+                
+                <!-- For now, if fileserver is not on same docker node or on a public IPv4 address alpine apk cannot access it -->
+                <alpine.repo></alpine.repo>
+                <alpine.repo.end></alpine.repo.end>
+                <!--
+                <alpine.repo>sed -i.bak ${sed.common} /etc/apk/repositories &amp;&amp;</alpine.repo>
+                <alpine.repo.end>find /etc/apt -name "*.bak" -exec mv -v {} $(dirname {})/$(basename {} .bak) \; &amp;&amp;</alpine.repo.end>
+                -->
+        
+                <ubuntu.repo>sed -i.bak ${sed.common} $(ls /etc/apt/sources.list /etc/apt/sources.list.d/*) &amp;&amp;</ubuntu.repo>
+                <ubuntu.repo.end>find /etc/apt -type f -name "*.bak" -print0 | sed "s/.bak//g" | xargs --null -I{} mv {}.bak {} &amp;&amp;</ubuntu.repo.end>
+        
+                <debian.repo>sed -ibak ${sed.common} $(ls /etc/apt/sources.list /etc/apt/sources.list.d/*) &amp;&amp;</debian.repo>
+                <debian.repo.end>find /etc/apt -type f -name "*.bak" -print0 | sed "s/.bak//g" | xargs --null -I{} mv {}.bak {} &amp;&amp;</debian.repo.end>
+            </properties>
+        </profile>
+    </profiles>
 </project>

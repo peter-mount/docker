@@ -3,10 +3,9 @@ MAINTAINER Peter Mount <peter@retep.org>
 
 # Java Version - Based on jeanblanchard/jdk
 ENV JAVA_VERSION_MAJOR 8
-ENV JAVA_VERSION_MINOR 74
-ENV JAVA_VERSION_BUILD 02
+ENV JAVA_VERSION_MINOR 92
+ENV JAVA_VERSION_BUILD 14
 ENV JAVA_PACKAGE       jdk
-ENV JAVA_SHA256_SUM    0bfd5d79f776d448efc64cb47075a52618ef76aabb31fde21c5c1018683cdddd
 
 RUN ${ubuntu.repo} \
     apt-get update &&\
@@ -31,10 +30,9 @@ RUN ${ubuntu.repo} \
     mkdir -p /var/run/sshd /opt &&\
     echo "Downloading java ${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}" &&\
     curl -s -jkLH "Cookie: oraclelicense=accept-securebackup-cookie" -o java.tar.gz\
-        http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz &&\
-    echo "$JAVA_SHA256_SUM  java.tar.gz" | sha256sum -c - &&\
+        ${java.download.url}/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz &&\
     echo "Installing java ${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}" &&\
-    gunzip -c java.tar.gz | tar -xf - -C /opt &&\
+    gunzip -c java.tar.gz | tar -xfz - -C /opt &&\
     rm -f java.tar.gz &&\
     ln -s /opt/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_MINOR} /opt/jdk &&\
     ln -s /opt/jdk/bin/idlj /usr/local/bin/idlj &&\
@@ -94,4 +92,4 @@ RUN ${ubuntu.repo} \
     /opt/jdk/bin/keytool -trustcacerts -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -noprompt -importcert -alias lets-encrypt-x4-cross-signed -file /lets-encrypt-x4-cross-signed.pem &&\
     rm -f /*.pem && \
     echo "Cleaning up" &&\
-    rm -rf /var/lib/apt/lists/*
+    ${ubuntu.repo.end} rm -rf /var/lib/apt/lists/*

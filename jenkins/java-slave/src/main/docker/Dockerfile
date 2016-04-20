@@ -29,7 +29,7 @@ RUN ${alpine.repo} \
         git \
         mercurial \
         subversion &&\
-    rm -rf /var/cache/apk/*
+    ${alpine.repo.end} rm -rf /var/cache/apk/*
 
 EXPOSE 22/tcp
 

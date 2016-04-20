@@ -31,10 +31,10 @@ RUN ${alpine.repo} \
         mercurial \
         subversion &&\
     echo Retrieving jenkins &&\
-    curl -sSL -O ${jenkins.repo}/latest/jenkins.war &&\
+    curl -sSL -O ${jenkins.repo}/war/latest/jenkins.war &&\
     mv jenkins.war /opt &&\
     mkdir ${JENKINS_HOME} &&\
-    rm -rf /var/cache/apk/*
+    ${alpine.repo.end} rm -rf /var/cache/apk/*
 
 EXPOSE 22/tcp 80/tcp 443/tcp 50000/tcp
 

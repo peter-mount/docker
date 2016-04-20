@@ -20,7 +20,8 @@ RUN ${alpine.repo} \
     curl -sSL -O ${nexus.url}/nexus-${nexus.version}-bundle.tar.gz &&\
     tar xzf nexus-${nexus.version}-bundle.tar.gz &&\
     mv nexus-${nexus.version} /opt/sonatype &&\
-    rm -rf nexus-${nexus.version}-bundle.tar.gz /var/cache/apk/*
+    rm -rf nexus-${nexus.version}-bundle.tar.gz &&\
+    ${alpine.repo.end} rm -rf /var/cache/apk/*
 
 VOLUME ${nexus.work}
 

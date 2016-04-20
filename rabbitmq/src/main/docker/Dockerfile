@@ -36,7 +36,8 @@ RUN         ${alpine.repo} \
             ls -l /opt && \
             touch ${RABBITMQ_HOME}/etc/rabbitmq/enabled_plugins && \
             rabbitmq-plugins enable --offline ${rabbit.plugins} &&\
-            apk del --purge tar xz && rm -Rf /var/cache/apk/*
+            apk del --purge tar xz &&\
+            ${alpine.repo.end} rm -Rf /var/cache/apk/*
 
 EXPOSE 15671 15672 \
         5672 \
