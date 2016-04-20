@@ -1,4 +1,4 @@
-FROM alpine
+FROM area51/alpine
 MAINTAINER Peter Mount <peter@retep.org>
 
 ENV         RABBITMQ_VERSION=${rabbit.version} \
@@ -28,7 +28,7 @@ RUN         ${alpine.repo} \
                 erlang-sasl erlang-asn1 erlang-inets erlang-os-mon erlang-xmerl erlang-eldap \
                 erlang-syntax-tools --update-cache --allow-untrusted && \
             cd /opt && \
-            rmq_zip_url=${github.url} && \
+            rmq_zip_url=${rabbit.url} && \
                 rmq_zip_url=${rmq_zip_url}/rabbitmq_v$(echo $RABBITMQ_MILESTONE | tr '.' '_') && \
                 rmq_zip_url=${rmq_zip_url}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz && \
             curl -L -o /opt/rmq.tar.xz $rmq_zip_url && \

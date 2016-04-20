@@ -31,7 +31,8 @@
         <java.download.url>http://download.oracle.com/otn-pub/java/jdk</java.download.url>
         <letsencrypt.repo>https://letsencrypt.org/certs</letsencrypt.repo>
         <nexus.url>https://download.sonatype.com/nexus/oss</nexus.url>
-
+        <rabbit.url>https://github.com/rabbitmq/rabbitmq-server/releases/download</rabbit.url>
+        
         <alpine.repo></alpine.repo>
         <alpine.repo.end></alpine.repo.end>
         
@@ -81,7 +82,8 @@
                 <jenkins.repo>${repo.base}/jenkins</jenkins.repo>
                 <java.download.url>${fileserver}/java</java.download.url>
                 <nexus.url>${repo.base}/nexus</nexus.url>
-
+                <rabbit.url>${repo.base}/rabbitmq/</rabbit.url>
+        
                 <sed.common> -r \
                     -e "s|http(s?)://(.+).alpinelinux.org|${repo.base}/alpine|g" \
                     -e "s|http(s?)://httpredir.debian.org|${repo.base}/debian|g" \

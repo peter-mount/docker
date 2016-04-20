@@ -14,6 +14,15 @@
     
     <description>RabbitMQ with all required plugins</description>
     
+    <dependencies>
+        <dependency>
+        <groupId>onl.area51.docker</groupId>
+            <artifactId>alpine</artifactId>            
+            <version>1.0-SNAPSHOT</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+    
     <properties>
         <docker.image.prefix>area51</docker.image.prefix>
         <docker.image.tag>3.7.0m2</docker.image.tag>
@@ -34,10 +43,8 @@
         <rabbit.milestone>3.7.0_milestone2</rabbit.milestone>
         <!-- The plugins to run as standard -->
         <rabbit.plugins>rabbitmq_management rabbitmq_mqtt rabbitmq_shovel rabbitmq_shovel_management rabbitmq_web_stomp</rabbit.plugins>
-        <!-- Change this to point to a local server if you want -->
-        <github.url>https://github.com/rabbitmq/rabbitmq-server/releases/download</github.url>
         <!-- Alpine download url -->
-        <alpine.url>http://dl-4.alpinelinux.org/alpine</alpine.url>
+        <alpine.url>http://dl-cdn.alpinelinux.org/alpine</alpine.url>
     </properties>
     
     <build>
