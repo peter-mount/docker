@@ -13,7 +13,8 @@ then
     then
         if [ -n "$DOCKER_PASSWORD" ]
         then
-            docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
+            docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" $DOCKER_SERVER
+            su -c "docker login -u \"$DOCKER_USER\" -p \"$DOCKER_PASSWORD\" $DOCKER_SERVER" - jenkins
         fi
     fi
 
