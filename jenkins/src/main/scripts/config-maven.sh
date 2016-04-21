@@ -74,6 +74,9 @@ then
 	echo '</settings>'
     ) >/home/jenkins/.m2/settings.xml
 
+    mkdir -p /opt/jenkins/.m2
+    cp /home/jenkins/.m2/settings.xml /opt/jenkins/.m2/settings.xml
+
     mkdir -p /root/.m2
     cp /home/jenkins/.m2/settings.xml /root/.m2/settings.xml
 
