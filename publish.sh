@@ -1,5 +1,8 @@
-#!/bin/bash
-for i in \
+#!/bin/ash
+
+if [ -n "$DOCKER_USER" ]
+then
+    for i in \
         area51/alpine \
 	area51/java:serverjre-8 \
 	area51/java:jre-8 \
@@ -11,12 +14,7 @@ for i in \
 	area51/nexus:latest \
 	area51/rabbitmq:latest \
 	area51/postgis:latest
-do
+    do
 	docker push $i
-done
-
-exit
-
-	area51/fileserver:latest \
-	area51/kernel:latest-opendata \
-	area51/kernel:latest \
+    done
+fi

@@ -8,4 +8,13 @@ then
     gn=$(grep ":${gid}:" /etc/group|cut -f1 -d':')
     adduser root "$gn"
     adduser jenkins "$gn"
+
+    if [ -n "$DOCKER_USER" ]
+    then
+        if [ -n "$DOCKER_PASSWORD" ]
+        then
+            docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
+        fi
+    fi
+
 fi
