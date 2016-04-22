@@ -18,9 +18,7 @@ ENV JAVA_PACKAGE       jdk
 ENV PATH $PATH:/opt/jdk/bin
 
 # Download and add the pem to the trust store
-RUN ${alpine.repo} \
-    apk add --update curl &&\
-    mkdir -p /opt &&\
+RUN mkdir -p /opt &&\
     curl -jkLH "Cookie: oraclelicense=accept-securebackup-cookie" -o java.tar.gz\
       ${java.download.url}/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz &&\
     gunzip -c java.tar.gz | tar -xf - -C /opt && rm -f java.tar.gz &&\
@@ -54,5 +52,4 @@ RUN ${alpine.repo} \
     /opt/jdk/bin/keytool -trustcacerts -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -noprompt -importcert -alias lets-encrypt-x2-cross-signed -file /lets-encrypt-x2-cross-signed.pem &&\
     /opt/jdk/bin/keytool -trustcacerts -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -noprompt -importcert -alias lets-encrypt-x3-cross-signed -file /lets-encrypt-x3-cross-signed.pem &&\
     /opt/jdk/bin/keytool -trustcacerts -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -noprompt -importcert -alias lets-encrypt-x4-cross-signed -file /lets-encrypt-x4-cross-signed.pem &&\
-    rm -f /*.pem && \
-    ${alpine.repo.end} rm -rf /var/cache/apk/*
+    rm -f /*.pem

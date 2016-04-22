@@ -27,6 +27,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     
+        <github.url>https://github.com</github.url>
         <jenkins.repo>http://mirrors.jenkins-ci.org</jenkins.repo>
         <java.download.url>http://download.oracle.com/otn-pub/java/jdk</java.download.url>
         <letsencrypt.repo>https://letsencrypt.org/certs</letsencrypt.repo>
@@ -79,6 +80,7 @@
             <properties>
                 <repo.base>${fileserver}/repo</repo.base>
         
+                <github.url>${repo.base}/github</github.url>
                 <jenkins.repo>${repo.base}/jenkins</jenkins.repo>
                 <java.download.url>${fileserver}/java</java.download.url>
                 <nexus.url>${repo.base}/nexus</nexus.url>

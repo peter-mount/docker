@@ -11,7 +11,6 @@ COPY *.sh /
 ENTRYPOINT  ["/docker-entrypoint.sh"]
 
 RUN ${alpine.repo} \
-    apk add --update ca-certificates openssh curl &&\
     chmod 500 /docker-entrypoint.sh &&\
     chmod -f 600 /etc/ssh.cache/ssh_host_* &&\
     mkdir -p ~root/.ssh &&\
