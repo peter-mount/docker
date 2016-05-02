@@ -31,9 +31,10 @@ RUN         ${alpine.repo} \
             rmq_zip_url=${rabbit.url} && \
                 rmq_zip_url=${rmq_zip_url}/rabbitmq_v$(echo $RABBITMQ_MILESTONE | tr '.' '_') && \
                 rmq_zip_url=${rmq_zip_url}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz && \
+	    echo "If we fail here check pom.xml and update the version" && \
             curl -L -o /opt/rmq.tar.xz $rmq_zip_url && \
+            echo "Installing rabbitmq $RABBITMQ_MILESTONE ($RABBITMQ_VERSION)" && \
             tar -xvf rmq.tar.xz && rm -f rmq.tar.xz && \
-            ls -l /opt && \
             touch ${RABBITMQ_HOME}/etc/rabbitmq/enabled_plugins && \
             rabbitmq-plugins enable --offline ${rabbit.plugins} &&\
             apk del --purge tar xz &&\
