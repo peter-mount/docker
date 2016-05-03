@@ -12,6 +12,7 @@
     
     <modules>
         <module>alpine</module>
+        <module>alpine-dev</module>
         <module>docker-client</module>
         <module>java</module>
         <module>jenkins</module>

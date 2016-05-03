@@ -9,6 +9,7 @@ for i in \
     area51/jenkins-slave:latest \
     area51/jenkins:latest \
     area51/ubuntu-dev:latest \
+    area51/alpine-dev:latest \
     area51/nexus:latest \
     area51/rabbitmq:latest \
     area51/postgis:latest
