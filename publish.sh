@@ -13,5 +13,7 @@ for i in \
     area51/rabbitmq:latest \
     area51/postgis:latest
 do
+    echo
+    echo $i
     docker push $i
 done
