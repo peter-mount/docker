@@ -32,7 +32,7 @@
         <jenkins.repo>http://mirrors.jenkins-ci.org</jenkins.repo>
         <java.download.url>http://download.oracle.com/otn-pub/java/jdk</java.download.url>
         <letsencrypt.repo>https://letsencrypt.org/certs</letsencrypt.repo>
-        <nexus.url>https://download.sonatype.com/nexus/oss</nexus.url>
+        <nexus.url>https://download.sonatype.com/nexus/3</nexus.url>
         <rabbit.url>https://github.com/rabbitmq/rabbitmq-server/releases/download</rabbit.url>
         
         <alpine.repo></alpine.repo>
@@ -84,7 +84,7 @@
                 <github.url>${repo.base}/github</github.url>
                 <jenkins.repo>${repo.base}/jenkins</jenkins.repo>
                 <java.download.url>${fileserver}/java</java.download.url>
-                <nexus.url>${repo.base}/nexus</nexus.url>
+                <nexus.url>${repo.base}/nexus3</nexus.url>
                 <rabbit.url>${repo.base}/rabbitmq/</rabbit.url>
         
                 <sed.common> -r \

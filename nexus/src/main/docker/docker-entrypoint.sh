@@ -1,11 +1,8 @@
 #!/bin/ash
 
-sed -i -e "s/application-port=8081/application-port=${NEXUS_PORT}/g" /opt/sonatype/nexus/conf/nexus.properties
+sed -i \
+    -e "s|application-port=8081|application-port=${NEXUS_PORT}|g" \
+    -e "s|nexus-context-path=/|nexus-context-path=${CONTEXT_PATH}|g" \
+    /opt/sonatype/nexus/etc/org.sonatype.nexus.cfg
 
-exec /opt/jdk/bin/java \
-    -Dnexus-work=${SONATYPE_WORK} \
-    -Dnexus-webapp-context-path=${CONTEXT_PATH} \
-    -Xms${MIN_HEAP} -Xmx${MAX_HEAP} \
-    -cp 'conf/:lib/*' \
-    ${JAVA_OPTS} \
-    org.sonatype.nexus.bootstrap.Launcher ${LAUNCHER_CONF}
+exec /opt/sonatype/nexus/bin/nexus run
