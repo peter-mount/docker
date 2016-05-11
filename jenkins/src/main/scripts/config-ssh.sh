@@ -21,6 +21,9 @@ if ! ls /etc/ssh/ssh_host_* 1> /dev/null 2>&1; then
     ssh-keygen -A
 fi
 
+# Disable Reverse DNS lookups as this can slow connections down
+echo "UseDNS no" >>/etc/ssh/sshd_config
+
 # Set the jenkins password
 if [ -n "$JENKINS_PASSWORD" ]
 then
