@@ -7,11 +7,13 @@
 # Copy default config from cache
 if [ ! "$(ls -A /etc/ssh)" ]; then
    cp -a /etc/ssh.cache/* /etc/ssh/
+   chmod 400 /etc/ssh/*_key
 fi
 
 # If no ssh keys, copy again
 if ! ls /etc/ssh/ssh_host_* 1> /dev/null 2>&1; then
    cp -a /etc/ssh.cache/ssh_host_* /etc/ssh/
+   chmod 400 /etc/ssh/*_key
 fi
 
 # Generate Host keys, if required
