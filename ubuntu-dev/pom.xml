@@ -20,6 +20,16 @@
                 <filtering>true</filtering>
                 <targetPath>${project.build.directory}/docker.temp</targetPath>
             </resource>
+            <resource>
+                <directory>../jenkins/src/main/scripts</directory>
+                <filtering>true</filtering>
+                <targetPath>${project.build.directory}/docker.temp</targetPath>
+            </resource>
+            <resource>
+                <directory>../jenkins/src/main/keys</directory>
+                <filtering>false</filtering>
+                <targetPath>${project.build.directory}/docker.temp</targetPath>
+            </resource>
         </resources>
         
         <plugins>
@@ -40,11 +50,7 @@
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <configuration>
-                    <imageName>${docker.image.prefix}/ubuntu-dev</imageName>
-                    <imageTags>
-                        <imageTag>latest</imageTag>
-                        <imageTag>16.04</imageTag>
-                    </imageTags>
+                    <imageName>${docker.image.prefix}/ubuntu-dev:latest</imageName>
                     <dockerDirectory>${project.build.directory}/docker.temp</dockerDirectory>
                 </configuration>
             </plugin>

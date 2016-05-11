@@ -8,6 +8,7 @@ ENV JAVA_VERSION_BUILD 14
 ENV JAVA_PACKAGE       jdk
 
 RUN ${ubuntu.repo} \
+    mkdir -p /var/run/sshd /opt &&\
     apt-get update &&\
     apt-get install -y \
         apt-transport-https \
@@ -16,7 +17,7 @@ RUN ${ubuntu.repo} \
         autoconf \
         automake \
         build-essential \
-        curl \
+        curl libcurl4-openssl-dev \
         cvs \
         git \
         mercurial \
@@ -24,11 +25,12 @@ RUN ${ubuntu.repo} \
         reprepro \
         s3cmd \
         subversion \
+        sudo \
         unzip \
         vim \
-        zip &&\
-    mkdir -p /var/run/sshd /opt &&\
-    echo "Downloading java ${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}" &&\
+        zip
+
+RUN echo "Downloading java ${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}" &&\
     curl -s -jkLH "Cookie: oraclelicense=accept-securebackup-cookie" -o java.tar.gz\
         ${java.download.url}/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz &&\
     echo "Installing java ${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}" &&\
@@ -90,6 +92,25 @@ RUN ${ubuntu.repo} \
     /opt/jdk/bin/keytool -trustcacerts -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -noprompt -importcert -alias lets-encrypt-x2-cross-signed -file /lets-encrypt-x2-cross-signed.pem &&\
     /opt/jdk/bin/keytool -trustcacerts -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -noprompt -importcert -alias lets-encrypt-x3-cross-signed -file /lets-encrypt-x3-cross-signed.pem &&\
     /opt/jdk/bin/keytool -trustcacerts -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -noprompt -importcert -alias lets-encrypt-x4-cross-signed -file /lets-encrypt-x4-cross-signed.pem &&\
-    rm -f /*.pem && \
-    echo "Cleaning up" &&\
-    ${ubuntu.repo.end} rm -rf /var/lib/apt/lists/*
+    rm -f /*.pem
+
+# Create jenkins user with default password (overridable when creating the image).
+# Allow sudo for build jobs to install packages required at build time
+COPY        motd        /etc/motd
+COPY        ssh_host_*  /etc/ssh.cache/
+COPY        *.sh        /
+
+# Copy to /etc/ssh/ as ubuntu seems to create random keys at install time, ssh.cache to keep inline with shared /config-ssh.sh script
+COPY        ssh_host_*  /etc/ssh/
+
+ENTRYPOINT  ["/docker-entrypoint.sh"]
+RUN groupadd --gid 1000 jenkins &&\
+    useradd --gid 1000 --uid 1000 -s /bin/bash -d /home/jenkins -m jenkins &&\
+    echo "jenkins:jenkins" | chpasswd &&\
+    echo "jenkins ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers &&\
+    chmod 400 /etc/ssh/*_key /etc/ssh.cache/*_key &&\
+    chmod +x /*.sh
+
+# Don't clean up apt as we can use that as part of dev build jobs later otherwise they'll need to run apt-get update each time
+#    echo "Cleaning up" &&\
+#    ${ubuntu.repo.end} rm -rf /var/lib/apt/lists/*
