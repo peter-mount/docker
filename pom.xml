@@ -19,6 +19,7 @@
         <module>nexus</module>
         <module>postgis</module>
         <module>rabbitmq</module>
+        <module>debian-dev</module>
         <module>ubuntu-dev</module>
     </modules>
     
@@ -90,10 +91,13 @@
                 <sed.common> -r \
                     -e "s|http(s?)://(.+).alpinelinux.org|${repo.base}/alpine|g" \
                     -e "s|http(s?)://httpredir.debian.org|${repo.base}/debian|g" \
-                    -e "s|http(s?)://security.debian.org|${repo.base}/debian-security|g" \
                     -e "s|http(s?)://apt.postgresql.org|${repo.base}/postgresql-apt|g" \
                     -e "s|http(s?)://archive.ubuntu.com|${repo.base}/ubuntu|g"
                 </sed.common>
+
+                <!-- For some reason debian-security breaks so don't proxy
+                -e "s|http(s?)://security.debian.org|${repo.base}/debian-security|g" \
+                -->
                 
                 <!-- For now, if fileserver is not on same docker node or on a public IPv4 address alpine apk cannot access it -->
                 <!--
