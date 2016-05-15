@@ -6,7 +6,7 @@ ENV JENKINS_HOME /home/jenkins
 COPY motd /etc/motd
 COPY ssh_host_* /etc/ssh.cache/
 
-COPY docker-entrypoint.sh /
+COPY *.sh /
 ENTRYPOINT  ["/docker-entrypoint.sh"]
 
 RUN addgroup -g 1000 jenkins &&\
