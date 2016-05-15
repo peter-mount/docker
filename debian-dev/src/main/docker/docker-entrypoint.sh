@@ -19,12 +19,8 @@
 . /config-maven.sh
 . /config-ssh.sh
 
-if [ -n "$JENKINS_URL" ]
+# Define NO_SSH=true to disable sshd
+if [ -z "$NO_SSH" ]
 then
-    CMD="/opt/jdk/jre/bin/java -jar /opt/slave.jar"
-    CMD="$CMD -jnlpUrl '${JENKINS_URL}/computer/$(hostname)/slave-agent.jnlp'"
-    CMD="$CMD -secret '${JENKINS_SECRET}'"
-    wget -O /opt/slave.jar ${JENKINS_URL}/jnlpJars/slave.jar && exec su -c "$CMD" - jenkins
-else
     exec /usr/sbin/sshd -D -f /etc/ssh/sshd_config
 fi
