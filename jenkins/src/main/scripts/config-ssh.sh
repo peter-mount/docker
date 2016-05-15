@@ -28,4 +28,5 @@ echo "UseDNS no" >>/etc/ssh/sshd_config
 if [ -n "$JENKINS_PASSWORD" ]
 then
     echo "jenkins:${JENKINS_PASSWORD}" | chpasswd
+    echo "cloud:${JENKINS_PASSWORD}" | chpasswd
 fi

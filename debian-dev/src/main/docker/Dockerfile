@@ -103,14 +103,21 @@ COPY        *.sh        /
 # Copy to /etc/ssh/ as ubuntu seems to create random keys at install time, ssh.cache to keep inline with shared /config-ssh.sh script
 COPY        ssh_host_*  /etc/ssh/
 
+RUN chmod 400 /etc/ssh/*_key /etc/ssh.cache/*_key &&\
+    chmod +x /*.sh
+
 ENTRYPOINT  ["/docker-entrypoint.sh"]
+
 RUN groupadd --gid 1000 jenkins &&\
     useradd --gid 1000 --uid 1000 -s /bin/bash -d /home/jenkins -m jenkins &&\
     echo "jenkins:jenkins" | chpasswd &&\
     echo "jenkins ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers &&\
-    chmod 400 /etc/ssh/*_key /etc/ssh.cache/*_key &&\
-    chmod +x /*.sh
+    groupadd --gid 1001 cloud &&\
+    useradd --gid 1001 --uid 1001 -s /bin/bash -d /home/cloud -m cloud &&\
+    echo "cloud:cloud" | chpasswd &&\
+    echo "cloud ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 
 # Don't clean up apt as we can use that as part of dev build jobs later otherwise they'll need to run apt-get update each time
 #    echo "Cleaning up" &&\
 #    ${debian.repo.end} rm -rf /var/lib/apt/lists/*
+RUN ${debian.repo.end} echo

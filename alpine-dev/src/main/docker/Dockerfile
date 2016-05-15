@@ -14,4 +14,7 @@ RUN ${alpine.repo} \
         mercurial \
         subversion \
         vim &&\
-    ${alpine.repo.end} rm -rf /var/lib/apt/lists/*
+    ${alpine.repo.end} echo
+
+# Don't remove apt lists as we want something present in most builds
+#    ${alpine.repo.end} rm -rf /var/lib/apt/lists/*
