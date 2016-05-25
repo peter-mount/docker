@@ -21,6 +21,7 @@
         <module>postgis</module>
         <module>postgresql</module>
         <module>rabbitmq</module>
+        <module>thingspeak</module>
         <module>ubuntu-dev</module>
     </modules>
     
