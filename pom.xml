@@ -13,13 +13,14 @@
     <modules>
         <module>alpine</module>
         <module>alpine-dev</module>
+        <module>debian-dev</module>
         <module>docker-client</module>
         <module>java</module>
         <module>jenkins</module>
         <module>nexus</module>
         <module>postgis</module>
+        <module>postgresql</module>
         <module>rabbitmq</module>
-        <module>debian-dev</module>
         <module>ubuntu-dev</module>
     </modules>
     

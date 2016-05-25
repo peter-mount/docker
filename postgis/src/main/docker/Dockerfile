@@ -1,4 +1,4 @@
-FROM postgres:9.5
+FROM area51/postgresql:latest
 MAINTAINER Peter Mount <peter@retep.org>
 
 #============================================================================
@@ -23,5 +23,4 @@ RUN ${debian.repo} \
         postgis=$POSTGIS_VERSION &&\
     ${debian.repo.end} rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /docker-entrypoint-initdb.d
 COPY ./*.sh /docker-entrypoint-initdb.d/

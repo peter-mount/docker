@@ -13,6 +13,7 @@ for i in \
     area51/ubuntu-dev:latest \
     area51/nexus:latest \
     area51/rabbitmq:latest \
+    area51/postgresql:latest
     area51/postgis:latest
 do
     echo
