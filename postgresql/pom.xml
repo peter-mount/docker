@@ -6,7 +6,6 @@
         <artifactId>docker</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>onl.area51.docker.jenkins</groupId>
     <artifactId>postgresql</artifactId>
     <packaging>pom</packaging>
     
