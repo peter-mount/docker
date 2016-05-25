@@ -18,4 +18,12 @@ echo "Initialising environment"
 ) >config/database.yml
 
 echo "Booting thingspeak"
-exec bundle exec rails server -p ${HTTP_PORT} 2>&1 >/dev/null
+
+OPTS="${OPTS} -p ${HTTP_PORT}"
+
+if [ "x$IPV6" != "xno" ]
+then
+    OPTS="${OPTS} -b ::"
+fi
+
+exec bundle exec rails server ${OPTS} 2>&1 >/dev/null

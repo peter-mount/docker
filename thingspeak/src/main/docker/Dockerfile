@@ -20,6 +20,9 @@ ENV DB_PORT         3306
 # HTTP Port
 ENV HTTP_PORT       80
 
+# Any value other than no will enable IPv6
+ENV IPV6            no
+
 WORKDIR /opt/
 
 COPY docker-entrypoint.sh /
