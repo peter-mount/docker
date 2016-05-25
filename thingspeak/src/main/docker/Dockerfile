@@ -3,11 +3,21 @@ MAINTAINER Peter Mount <peter@retep.org>
 
 ENV DEBIAN_FRONTEND noninteractive
 
+# DB Pool size
 ENV DB_POOL         5
-ENV DB_USER         thingspeak
+
+# DB NAME
+ENV DB_NAME         thingspeak
+
+# DB User credentials
+ENV DB_USER         root
 ENV DB_PASSWORD     thingspeak
+
+# DB PostgreSQL host
 ENV DB_HOST         thingspeak
-ENV DB_PORT         5432
+ENV DB_PORT         3306
+
+# HTTP Port
 ENV HTTP_PORT       80
 
 WORKDIR /opt/
@@ -19,13 +29,11 @@ RUN ${debian.repo} \
     apt-get install -y \
         build-essential \
         git \
-        libpq-dev \
-        postgresql-client &&\
+        libpq-dev &&\
     mkdir -p /opt &&\
     cd /opt &&\
     git clone https://github.com/peter-mount/thingspeak.git &&\
     cd thingspeak &&\
-    echo "gem 'pg'" >>Gemfile &&\
     bundle install &&\
     chmod +x /*.sh &&\
     ${debian.repo.end} rm -rf /var/lib/apt/lists/*
