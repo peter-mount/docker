@@ -19,6 +19,7 @@
             <groupId>onl.area51.docker</groupId>
             <artifactId>postgresql</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <type>pom</type>
         </dependency>
     </dependencies>
     
