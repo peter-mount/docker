@@ -15,7 +15,8 @@ for i in \
     area51/rabbitmq:latest \
     area51/postgresql:latest \
     area51/postgis:latest \
-    area51/thingspeak:latest
+    area51/thingspeak:latest \
+    area51/node:latest
 do
     echo
     echo $i
