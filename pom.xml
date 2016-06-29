@@ -18,6 +18,7 @@
         <module>java</module>
         <module>jenkins</module>
         <module>nexus</module>
+        <module>node</module>
         <module>postgis</module>
         <module>postgresql</module>
         <module>rabbitmq</module>
@@ -70,6 +71,7 @@
     
     <profiles>
         <profile>
+            <id>fileserver.profile</id>
             <!--
             Add -Dfileserver=http://hostname then these kick in.
             
@@ -91,7 +93,6 @@
                 <rabbit.url>${repo.base}/rabbitmq/</rabbit.url>
         
                 <sed.common> -r \
-                    -e "s|http(s?)://(.+).alpinelinux.org|${repo.base}/alpine|g" \
                     -e "s|http(s?)://httpredir.debian.org|${repo.base}/debian|g" \
                     -e "s|http(s?)://apt.postgresql.org|${repo.base}/postgresql-apt|g" \
                     -e "s|http(s?)://archive.ubuntu.com|${repo.base}/ubuntu|g"
@@ -100,18 +101,44 @@
                 <!-- For some reason debian-security breaks so don't proxy
                 -e "s|http(s?)://security.debian.org|${repo.base}/debian-security|g" \
                 -->
-                
-                <!-- For now, if fileserver is not on same docker node or on a public IPv4 address alpine apk cannot access it -->
-                <!--
-                <alpine.repo>sed -i.bak ${sed.common} /etc/apk/repositories &amp;&amp;</alpine.repo>
-                <alpine.repo.end>find /etc/apt -name "*.bak" -exec mv -v {} $(dirname {})/$(basename {} .bak) \; &amp;&amp;</alpine.repo.end>
-                -->
         
                 <ubuntu.repo>sed -i.bak ${sed.common} $(ls /etc/apt/sources.list /etc/apt/sources.list.d/*) &amp;&amp;</ubuntu.repo>
                 <ubuntu.repo.end>find /etc/apt -type f -name "*.bak" -print0 | sed "s/.bak//g" | xargs --null -I{} mv {}.bak {} &amp;&amp;</ubuntu.repo.end>
         
                 <debian.repo>sed -ibak ${sed.common} $(ls /etc/apt/sources.list /etc/apt/sources.list.d/*) &amp;&amp;</debian.repo>
                 <debian.repo.end>find /etc/apt -type f -name "*.bak" -print0 | sed "s/.bak//g" | xargs --null -I{} mv {}.bak {} &amp;&amp;</debian.repo.end>
+            </properties>
+        </profile>
+        
+        <profile>
+            <id>alpine.profile</id>
+            <!--
+                For alpine, as it doesn't support IPv6 in apk if we want to
+                use a fileserver instance we need to run it against an IPv4
+                address, hence it's configured separately.
+                 
+                So we have -Dalpineproxy=http://fileserver/alpine
+
+                If we want to use the same IPv6 instance, then we have to
+                use a proxy instead. So we allocate a port (5000) and run
+                socat (as root)
+                 
+                    nohup socat TCP4-LISTEN:5000,fork,su=nobody TCP6:fileserver:80 &
+                 
+                Next we get the docker host IP address as visible from a
+                container (e.g. 172.17.4.84) and set the proxy as:
+                 
+                    -Dalpineproxy=http://172.17.4.84:5000/alpine
+            -->
+            <activation>
+                <property>
+                    <name>alpineproxy</name>
+                </property>
+            </activation>
+            <properties>
+                <alpinesed.common> -r -e "s|http(s?)://(.+).alpinelinux.org|${alpineproxy}|g"</alpinesed.common>
+                <alpine.repo>sed -i.bak ${alpinesed.common} /etc/apk/repositories &amp;&amp;</alpine.repo>
+                <alpine.repo.end>mv /etc/apk/repositories.bak /etc/apk/repositories &amp;&amp;</alpine.repo.end>
             </properties>
         </profile>
     </profiles>
