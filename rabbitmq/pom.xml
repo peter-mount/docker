@@ -25,7 +25,7 @@
     
     <properties>
         <docker.image.prefix>area51</docker.image.prefix>
-        <docker.image.tag>3.7.0m3</docker.image.tag>
+        <docker.image.tag>3.7.0m4</docker.image.tag>
         <!--
             The rabbit version to install. For a stable release both should match
             For pre-release versions then they match the two parts of the download url
@@ -39,8 +39,8 @@
 
             Here rabbit.version will be 3.7.500.2 and rabbit.milestone 3.7.0_milestone2
         -->
-        <rabbit.version>3.7.500.3</rabbit.version>
-        <rabbit.milestone>3.7.0_milestone3</rabbit.milestone>
+        <rabbit.version>3.7.500.4</rabbit.version>
+        <rabbit.milestone>3.7.0_milestone4</rabbit.milestone>
         <!-- The plugins to run as standard -->
         <rabbit.plugins>rabbitmq_management rabbitmq_mqtt rabbitmq_shovel rabbitmq_shovel_management rabbitmq_web_stomp</rabbit.plugins>
         <!-- Alpine download url -->
