@@ -1,3 +1,7 @@
+# This repo is now archived - i.e. it will not be updated.
+
+I've split everything out of this into their own projects and docker hub now builds them automatically as soon as a change occurs.
+
 # docker
 A collection of Docker image builds used elsewhere in other projects
 
